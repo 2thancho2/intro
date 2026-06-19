@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2than</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        body {
+            /* 흰색, 회색, 검은색 그라데이션 배경 */
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 35%, #1e293b 85%, #0f172a 100%);
+            background-attachment: fixed;
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 50px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+        }
+
+        /* 프로필 영역 */
+        .profile {
+            margin-bottom: 36px;
+        }
+
+        .profile-img-container {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover; /* 이미지가 정원 안에 비율 깨짐 없이 꽉 차도록 설정 */
+            box-shadow: 0 8px 24px rgba(30, 41, 59, 0.15);
+            background: #475569; /* 이미지 로딩 전 기본 색상 */
+        }
+
+        .profile h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .profile .bio {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        /* 링크 리스트 영역 */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        /* 기본 링크 카드 스타일 (평상시: 밝은 톤) */
+        .link-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 16px;
+            padding: 18px 22px;
+            text-decoration: none;
+            color: #0f172a;
+            backdrop-filter: blur(8px);
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+            
+            /* 애니메이션 및 Hover 효과를 위한 부드러운 전환 설정 */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        background-color 0.3s ease,
+                        border-color 0.3s ease,
+                        color 0.3s ease,
+                        box-shadow 0.3s ease;
+        }
+
+        /* 내부 요소 기본 스타일 및 전환 설정 */
+        .link-card .icon {
+            font-size: 1.4rem;
+            margin-right: 18px;
+            width: 24px;
+            text-align: center;
+            color: #475569;
+            transition: color 0.3s ease;
+        }
+
+        .link-card .text {
+            flex-grow: 1;
+        }
+
+        .link-card .text h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .link-card .text p {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+
+        .link-card .arrow {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            transition: transform 0.2s ease, color 0.3s ease;
+        }
+
+        /* Hover 시 project-highlight 스타일로 전환 */
+        .link-card:hover {
+            transform: translateY(-4px) !important;
+            background: #0f172a;          /* 어두운 검은색 배경 */
+            border-color: #0f172a;        /* 테두리 색상 통일 */
+            color: #ffffff;               /* 전체 텍스트 흰색 변경 */
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+        }
+
+        .link-card:hover .icon {
+            color: #ffffff;
+        }
+
+        .link-card:hover .text p {
+            color: #94a3b8;
+        }
+
+        .link-card:hover .arrow {
+            transform: translateX(4px);
+            color: #ffffff;
+        }
+
+        /* 푸터 */
+        .social-footer {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="profile">
+            <div class="profile-img-container">
+                <img src="https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-19/724500434_17892582246535543_1471913819856721348_n.jpg?_nc_cat=103&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4zNjguQzMifQ%3D%3D&_nc_ohc=WPoScWtgxJ0Q7kNvwFG61Ay&_nc_oc=AdrrfzODs6AbXwzXg6qNFqBAie4w7IJagGmEpc3knnnqE9t7K_2II611dKOWNjj5LfE&_nc_zt=24&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_gid=gvlfSUwNo6vUvVP9W9u7lw&_nc_ss=7b6a8&oh=00_Af-JulroU01EU-ngY39z6pCWxQo0iLMhbcRFXrlv4ON1PQ&oe=6A3A7391" alt="프로필 사진" class="profile-img" id="userProfile" onerror="handleImageError()">
+                
+                <div id="defaultIcon" class="profile-img" style="display:none; justify-content:center; align-items:center; font-size:2rem; color:#fff; background:linear-gradient(135deg, #1e293b, #475569);">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+            </div>
+            <h1>이든</h1>
+            <p class="bio">developing..</p>
+        </header>
+
+        <main class="links-container">
+            
+            <a href="https://www.instagram.com/2._.than/" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+                <div class="text">
+                    <h3>Instagram : 2._.than</h3>
+                    <p>모든 문의는 Instagram DM으로</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://2than.tistory.com/15" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-brands fa-discord"></i></div>
+                <div class="text">
+                    <h3>Discord Bot : 3than</h3>
+                    <p>다기능 디스코드 봇 삼든이</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://2than.tistory.com/14" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="text">
+                    <h3>FPS Game : beck.io</h3>
+                    <p>FPS 총 게임 beck.io (test1234)</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://2than.kro.kr" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="text">
+                    <h3>2than Online Judge</h3>
+                    <p>파이썬 문제 풀이 사이트</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="https://onlinekaraoke.kro.kr" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-solid fa-microphone"></i></div>
+                <div class="text">
+                    <h3>Online Karaoke</h3>
+                    <p>온라인 노래방에서 원하는 노래를 내 마음대로</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+            <a href="#" target="_blank" class="link-card">
+                <div class="icon"><i class="fa-solid fa-comment"></i></div>
+                <div class="text">
+                    <h3>2Chat</h3>
+                    <p>카카오톡과 인스타를 이을 웹 채팅 사이트(개발중)</p>
+                </div>
+                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            </a>
+
+        </main>
+
+        <footer class="social-footer">
+            <p>made by 2than</p>
+        </footer>
+    </div>
+
+    <script>
+        // 이미지 주소가 올바르지 않거나 로드에 실패했을 때 처리하는 함수
+        function handleImageError() {
+            const img = document.getElementById('userProfile');
+            const defIcon = document.getElementById('defaultIcon');
+            if (img) img.style.display = 'none';
+            if (defIcon) defIcon.style.display = 'flex';
+        }
+
+        // 페이지 로드 시 카드가 위로 스르륵 나타나는 순차 애니메이션
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.link-card');
+            
+            // 만약 src가 비어있거나 주소가 이상하면 미리 대체 아이콘 처리
+            const img = document.getElementById('userProfile');
+            if(!img.getAttribute('src') || img.getAttribute('src') === "") {
+                handleImageError();
+            }
+
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 120);
+            });
+        });
+    </script>
+</body>
+</html>
