@@ -7,41 +7,55 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* 기본 리셋 및 폰트 설정 */
+        /* 글로벌 디자인 시스템 - 화이트 & 모노톤 회색 조합 */
+        :root {
+            --bg-primary: #ffffff;      /* 순수 흰색 배경 */
+            --bg-secondary: #f9fafb;    /* 카드 등 영역 구분을 위한 옅은 회색 */
+            --bg-card-hover: #f3f4f6;   /* 마우스 올렸을 때 회색 피드백 */
+            --text-primary: #111827;    /* 주요 글씨 (소프트 블랙) */
+            --text-secondary: #6b7280;  /* 보조 설명 글씨 (중간 회색) */
+            --accent: #1f2937;          /* 강조용 다크 차콜 */
+            --border: #e5e7eb;          /* 경계선용 부드러운 회색 */
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         }
 
         body {
-            /* 흰색, 회색, 검은색 그라데이션 배경 */
-            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 35%, #1e293b 85%, #0f172a 100%);
-            background-attachment: fixed;
-            color: #0f172a;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 50px 20px;
+            padding: 80px 20px;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 520px;
-            text-align: center;
+            max-width: 680px;
         }
 
-        /* 프로필 영역 */
-        .profile {
-            margin-bottom: 36px;
+        /* 1. 프로필 & 자기소개 영역 */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 60px;
+            background: var(--bg-secondary);
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
         }
 
         .profile-img-container {
-            width: 96px;
-            height: 96px;
-            margin: 0 auto 16px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
             position: relative;
         }
 
@@ -49,227 +63,479 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            object-fit: cover; /* 이미지가 정원 안에 비율 깨짐 없이 꽉 차도록 설정 */
-            box-shadow: 0 8px 24px rgba(30, 41, 59, 0.15);
-            background: #475569; /* 이미지 로딩 전 기본 색상 */
+            object-fit: cover;
+            border: 2px solid var(--accent);
         }
 
-        .profile h1 {
-            font-size: 1.5rem;
+        .profile-section h1 {
+            font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 8px;
             letter-spacing: -0.5px;
-            color: #0f172a;
+            color: var(--text-primary);
         }
 
-        .profile .bio {
+        .tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .bio-short {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            cursor: pointer;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .bio-short:hover {
+            color: var(--text-primary);
+        }
+
+        .bio-long {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s;
             font-size: 0.95rem;
-            color: #475569;
-            font-weight: 500;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.01);
+            border-radius: 12px;
         }
 
-        /* 링크 리스트 영역 */
-        .links-container {
+        .bio-long.active {
+            max-height: 300px;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* 섹션 타이틀 */
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 2. 프로젝트 리스트 영역 */
+        .projects-grid {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
-        /* 기본 링크 카드 스타일 (평상시: 밝은 톤) */
-        .link-card {
+        .project-card {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 18px 22px;
-            text-decoration: none;
-            color: #0f172a;
-            backdrop-filter: blur(8px);
-            text-align: left;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-            
-            /* 애니메이션 및 Hover 효과를 위한 부드러운 전환 설정 */
+            padding: 20px 24px;
+            cursor: pointer;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        background-color 0.3s ease,
-                        border-color 0.3s ease,
-                        color 0.3s ease,
-                        box-shadow 0.3s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, background-color 0.2s;
         }
 
-        /* 내부 요소 기본 스타일 및 전환 설정 */
-        .link-card .icon {
+        .project-card:hover {
+            border-color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .project-icon {
             font-size: 1.4rem;
-            margin-right: 18px;
-            width: 24px;
+            color: var(--text-primary);
+            margin-right: 20px;
+            width: 32px;
             text-align: center;
-            color: #475569;
-            transition: color 0.3s ease;
         }
 
-        .link-card .text {
+        .project-info {
             flex-grow: 1;
         }
 
-        .link-card .text h3 {
-            font-size: 1.05rem;
+        .project-info h3 {
+            font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 4px;
+            color: var(--text-primary);
         }
 
-        .link-card .text p {
-            font-size: 0.85rem;
-            color: #475569;
-            line-height: 1.4;
-            transition: color 0.3s ease;
-        }
-
-        .link-card .arrow {
+        .project-info p {
             font-size: 0.9rem;
-            color: #94a3b8;
-            transition: transform 0.2s ease, color 0.3s ease;
+            color: var(--text-secondary);
         }
 
-        /* Hover 시 project-highlight 스타일로 전환 */
-        .link-card:hover {
-            transform: translateY(-4px) !important;
-            background: #0f172a;          /* 어두운 검은색 배경 */
-            border-color: #0f172a;        /* 테두리 색상 통일 */
-            color: #ffffff;               /* 전체 텍스트 흰색 변경 */
-            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+        .project-action {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.2s ease;
         }
 
-        .link-card:hover .icon {
+        .project-card:hover .project-action {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 3. 상세 설명 전체 창 (Detail View overlay) */
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98); /* 전체를 덮는 깔끔한 화이트 배경 */
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .detail-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .detail-window {
+            width: 100%;
+            max-width: 600px;
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .detail-overlay.active .detail-window {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-size: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .detail-header i {
+            font-size: 2rem;
+            color: var(--text-primary);
+        }
+
+        .detail-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .detail-body {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            white-space: pre-line; /* 줄바꿈 적용 */
+        }
+
+        .detail-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-primary {
+            background: var(--accent);
             color: #ffffff;
+            border: 1px solid var(--accent);
         }
 
-        .link-card:hover .text p {
-            color: #94a3b8;
+        .btn-primary:hover {
+            opacity: 0.9;
         }
 
-        .link-card:hover .arrow {
-            transform: translateX(4px);
-            color: #ffffff;
+        /* 방문 버튼 비활성화 상태 스타일 */
+        .btn-primary.disabled {
+            background: var(--border);
+            border-color: var(--border);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            pointer-events: none; /* 클릭 불가 */
         }
 
-        /* 푸터 */
-        .social-footer {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header class="profile">
+        
+        <!-- 1. 프로필 & 자기소개 -->
+        <section class="profile-section">
             <div class="profile-img-container">
-                <img src="https://scontent-ssn1-1.cdninstagram.com/v/t51.82787-19/724500434_17892582246535543_1471913819856721348_n.jpg?_nc_cat=103&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4zNjguQzMifQ%3D%3D&_nc_ohc=WPoScWtgxJ0Q7kNvwFG61Ay&_nc_oc=AdrrfzODs6AbXwzXg6qNFqBAie4w7IJagGmEpc3knnnqE9t7K_2II611dKOWNjj5LfE&_nc_zt=24&_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_gid=gvlfSUwNo6vUvVP9W9u7lw&_nc_ss=7b6a8&oh=00_Af-JulroU01EU-ngY39z6pCWxQo0iLMhbcRFXrlv4ON1PQ&oe=6A3A7391" alt="프로필 사진" class="profile-img" id="userProfile" onerror="handleImageError()">
-                
-                <div id="defaultIcon" class="profile-img" style="display:none; justify-content:center; align-items:center; font-size:2rem; color:#fff; background:linear-gradient(135deg, #1e293b, #475569);">
-                    <i class="fa-solid fa-code"></i>
-                </div>
-            </div>
+    <div class="profile-img"
+         style="display:flex; justify-content:center; align-items:center; font-size:2rem; color:var(--text-secondary); background:var(--bg-card-hover);">
+        <i class="fa-solid fa-code"></i>
+    </div>
+</div>
+            <span class="tag">Developer</span>
             <h1>이든</h1>
-            <p class="bio">developing..</p>
-        </header>
-
-        <main class="links-container">
+            <div class="bio-short" id="bioToggle">
+                <span>developing.. (더 보기)</span>
+                <i class="fa-solid fa-chevron-down" id="bioArrow"></i>
+            </div>
             
-            <a href="https://www.instagram.com/2._.than/" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-brands fa-instagram"></i></div>
-                <div class="text">
-                    <h3>Instagram : 2._.than</h3>
-                    <p>모든 문의는 Instagram DM으로</p>
-                </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+            <div class="bio-long" id="bioLong">
+                안녕하세요, 유용하고 재미있는 웹 서비스를 개발하는 이든입니다.<br>
+                현재 치동중학교에 재학 중이며, 디스코드 봇부터 FPS 웹 게임, 온라인 저지 시스템 등 다양한 프로젝트를 주도하며 백엔드 및 프론트엔드 역량을 키워나가고 있습니다.
+            </div>
+        </section>
 
-            <a href="https://welcometopy.netlify.app" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-brands fa-python"></i></div>
-                <div class="text">
+        <h2 class="section-title"><i class="fa-solid fa-cubes"></i> Projects</h2>
+
+        <!-- 2. 프로젝트 리스트 (클릭 시 상세 모달창 오픈) -->
+        <main class="projects-grid">
+            
+            <!-- Instagram -->
+            <div class="project-card" data-project="instagram">
+                <div class="project-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div class="project-info">
+                    <h3>Instagram</h3>
+                    <p>문의는 Instagram DM</p>
+                </div>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+
+            <!-- Welcome to PY -->
+            <div class="project-card" data-project="welcome-py">
+                <div class="project-icon"><i class="fa-brands fa-python"></i></div>
+                <div class="project-info">
                     <h3>Welcome to PY</h3>
                     <p>치동중 코딩부 PY 신청</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="https://discord.com/oauth2/authorize?client_id=1462335234832994508&permissions=8&integration_type=0&scope=bot" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-brands fa-discord"></i></div>
-                <div class="text">
+            <!-- Discord Bot -->
+            <div class="project-card" data-project="discord-bot">
+                <div class="project-icon"><i class="fa-brands fa-discord"></i></div>
+                <div class="project-info">
                     <h3>Discord Bot : 3than</h3>
                     <p>다기능 디스코드 봇 삼든이</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="https://beckio.kro.kr" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="text">
+            <!-- beck.io -->
+            <div class="project-card" data-project="beck-io">
+                <div class="project-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="project-info">
                     <h3>FPS Game : beck.io</h3>
-                    <p>FPS 총 게임 beck.io (test1234 ver)</p>
+                    <p>FPS 총 게임 beck.io</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="https://2than.kro.kr" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <div class="text">
+            <!-- 2than Online Judge -->
+            <div class="project-card" data-project="online-judge">
+                <div class="project-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="project-info">
                     <h3>2than Online Judge</h3>
                     <p>파이썬 문제 풀이 사이트</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="https://kimkorean.netlify.app" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-font"></i></div>
-                <div class="text">
+            <!-- Kim-Korean translater -->
+            <div class="project-card" data-project="kim-korean">
+                <div class="project-icon"><i class="fa-solid fa-font"></i></div>
+                <div class="project-info">
                     <h3>Kim-Korean translater</h3>
-                    <p>치동중 2026년 학생회장 김민종의 김민종음 번역기</p>
+                    <p>김민종음 번역기</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="https://onlinekaraoke.kro.kr" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-microphone"></i></div>
-                <div class="text">
+            <!-- Online Karaoke -->
+            <div class="project-card" data-project="online-karaoke">
+                <div class="project-icon"><i class="fa-solid fa-microphone"></i></div>
+                <div class="project-info">
                     <h3>Online Karaoke</h3>
-                    <p>온라인 노래방에서 원하는 노래를 내 마음대로</p>
+                    <p>온라인 노래방 서비스</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
-            <a href="https://duongoringo.kro.kr/" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-microphone"></i></div>
-                <div class="text">
-                   <h3>Duongoringo</h3>
-                    <p>중국어 시험 대비 사이트</p>
-                </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
-            <a href="#" target="_blank" class="link-card">
-                <div class="icon"><i class="fa-solid fa-comment"></i></div>
-                <div class="text">
-                    <h3>2Chat</h3>
-                    <p>카카오톡과 인스타를 이을 웹 채팅 사이트(개발중)</p>
+            <!-- DuoShao -->
+            <div class="project-card" data-project="duoshao">
+                <div class="project-icon"><i class="fa-solid fa-language"></i></div>
+                <div class="project-info">
+                    <h3>DuoShao(duongoringo)</h3>
+                    <p>시험 만점 대비 사이트</p>
                 </div>
-                <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
-            </a>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+
+            <!-- 2Chat (개발 중) -->
+            <div class="project-card" data-project="2chat">
+                <div class="project-icon"><i class="fa-solid fa-comment"></i></div>
+                <div class="project-info">
+                    <h3>2Chat</h3>
+                    <p>웹 채팅 사이트 (개발중)</p>
+                </div>
+                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
+            </div>
 
         </main>
 
-        <footer class="social-footer">
-            <p>made by 2than</p>
+        <footer>
+            <p>© 2026 2than. All rights reserved.</p>
         </footer>
     </div>
 
+    <!-- 3. 상세 정보 오버레이 화면 -->
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-window">
+            <button class="close-btn" id="closeBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="detail-header">
+                <div id="detailIcon"></div>
+                <h2 id="detailTitle">프로젝트 제목</h2>
+            </div>
+            <div class="detail-body" id="detailDescription">
+                여기에 프로젝트 상세 설명이 들어갑니다.
+            </div>
+            <div class="detail-footer">
+                <button class="btn btn-secondary" id="backBtn">돌아가기</button>
+                <a href="#" target="_blank" class="btn btn-primary" id="visitBtn">방문하기 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 이미지 주소가 올바르지 않거나 로드에 실패했을 때 처리하는 함수
+        // 💡 각 프로젝트별 데이터 정의 (여기에 자세한 설명을 마음껏 적으세요!)
+        const projectData = {
+            "instagram": {
+                title: "Instagram",
+                icon: '<i class="fa-brands fa-instagram"></i>',
+                desc: "이든의 공식 인스타그램 계정입니다.\n프로젝트 협업 제안, 버그 제보, 기타 모든 문의 사항은 인스타그램 DM을 통해 보내주시면 가장 빠르게 확인하고 답변해 드릴 수 있습니다.\n\n일상 공유 및 개발 비하인드 스토리도 종종 업로드됩니다.",
+                link: "https://www.instagram.com/2._.than/"
+            },
+            "welcome-py": {
+                title: "Welcome to PY",
+                icon: '<i class="fa-brands fa-python"></i>',
+                desc: "치동중학교 코딩 동아리 'PY'의 부원 모집 및 신청을 위한 웹사이트입니다.\n\n동아리 소개, 주요 활동 커리큘럼을 확인할 수 있으며 파이썬에 관심이 있는 치동중 학생들이 편리하게 지원할 수 있도록 프론트엔드를 구성했습니다.",
+                link: "https://welcometopy.netlify.app"
+            },
+            "discord-bot": {
+                title: "Discord Bot : 3than",
+                icon: '<i class="fa-brands fa-discord"></i>',
+                desc: "디스코드 서버의 관리와 재미를 책임지는 다기능 봇 '삼든이' 프로젝트입니다.\n\n다양한 서버 관리 명령어부터 유저들이 즐길 수 있는 미니게임, 편리한 유틸리티 기능까지 유연하게 작동하도록 설계된 백엔드 기반 봇입니다. 위 버튼을 통해 본인의 서버에 초대할 수 있습니다.",
+                link: "https://discord.com/oauth2/authorize?client_id=1462335234832994508&permissions=8&integration_type=0&scope=bot"
+            },
+            "beck-io": {
+                title: "FPS Game : beck.io",
+                icon: '<i class="fa-solid fa-gamepad"></i>',
+                desc: "웹 브라우저에서 별도의 설치 없이 즉시 즐길 수 있는 FPS(1인칭 슈팅) 웹 게임입니다.\n\n웹소켓 통신을 활용한 실시간 멀티플레이 환경을 구축하는 것을 목표로 했으며, 매끄러운 그래픽 구현과 판정 로직에 집중하여 개발한 몰입감 넘치는 프로젝트입니다.",
+                link: "https://beckio.kro.kr"
+            },
+            "online-judge": {
+                title: "2than Online Judge",
+                icon: '<i class="fa-solid fa-graduation-cap"></i>',
+                desc: "파이썬 언어를 학습하는 학생들을 위한 온라인 알고리즘 문제 풀이(Online Judge) 채점 시스템입니다.\n\n사용자가 제출한 코드를 서버에서 안전하고 정확하게 런타임 검증을 거쳐 정답 여부를 판정해 줍니다. 단계별 문제를 통해 코딩 실력을 키울 수 있습니다.",
+                link: "https://2than.kro.kr"
+            },
+            "kim-korean": {
+                title: "Kim-Korean translater",
+                icon: '<i class="fa-solid fa-font"></i>',
+                desc: "친구들과 유쾌하게 사용할 수 있는 독창적인 언어 번역기, '김민종음 번역기' 서비스입니다.\n\n입력한 한글 텍스트를 특정 규칙과 알고리즘에 따라 고유의 특색 있는 말투('김민종음')로 실시간 치환 및 번역해 주는 위트 있는 웹 애플리케이션입니다.",
+                link: "https://kimkorean.netlify.app"
+            },
+            "online-karaoke": {
+                title: "Online Karaoke",
+                desc: "코인노래방에 가지 않고도 웹에서 자유롭게 반주에 맞춰 노래를 부를 수 있는 온라인 노래방 서비스입니다.\n\n실시간 유튜브 MR 스트리밍 연동 및 가사 싱크 기능 등을 고려하여 UI/UX를 설계했으며, 누구나 쉽게 접근하여 즐길 수 있도록 제작했습니다.",
+                icon: '<i class="fa-solid fa-microphone"></i>',
+                link: "https://onlinekaraoke.kro.kr"
+            },
+            "duoshao": {
+                title: "DuoShao(duongoringo)",
+                icon: '<i class="fa-solid fa-language"></i>',
+                desc: "학교 시험 및 각종 테스트에서 만점을 목표로 하는 학생들을 위한 맞춤형 학습 대비 사이트입니다.\n\n핵심 암기 과목의 키워드 체크, 오답 노트 기능, 효과적인 암기 메커니즘을 웹으로 구현하여 시험 준비 효율성을 극대화해 주는 교육 보조 도구입니다.",
+                link: "https://duongoringo.kro.kr/"
+            },
+            "2chat": {
+                title: "2Chat",
+                icon: '<i class="fa-solid fa-comment"></i>',
+                desc: "현재 열심히 기획 및 백엔드 설계를 진행 중인 웹 기반 채팅 서비스입니다.\n\n안정적인 실시간 소통 인프라를 구축 중이며, 개발이 완료되는 대로 오픈될 예정입니다. 조금만 기다려 주세요!",
+                link: null // 개발 중이므로 링크 없음
+            }
+        };
+
+        // 프로필 이미지 로드 실패 시 대안 아이콘 표시
         function handleImageError() {
             const img = document.getElementById('userProfile');
             const defIcon = document.getElementById('defaultIcon');
@@ -277,21 +543,81 @@
             if (defIcon) defIcon.style.display = 'flex';
         }
 
-        // 페이지 로드 시 카드가 위로 스르륵 나타나는 순차 애니메이션
         document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.link-card');
-            
-            // 만약 src가 비어있거나 주소가 이상하면 미리 대체 아이콘 처리
             const img = document.getElementById('userProfile');
-            if(!img.getAttribute('src') || img.getAttribute('src') === "") {
-                handleImageError();
-            }
 
+            // 1. 자기소개 아코디언 제어
+            const bioToggle = document.getElementById('bioToggle');
+            const bioLong = document.getElementById('bioLong');
+            const bioArrow = document.getElementById('bioArrow');
+
+            bioToggle.addEventListener('click', () => {
+                const isActive = bioLong.classList.toggle('active');
+                bioArrow.style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
+                bioToggle.querySelector('span').innerText = isActive ? 'developing.. (접기)' : 'developing.. (더 보기)';
+            });
+
+            // 2. 카드 순차적 진입 애니메이션
+            const cards = document.querySelectorAll('.project-card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, index * 120);
+                }, index * 50);
+            });
+
+            // 3. 상세 설명 오버레이 제어 로직
+            const overlay = document.getElementById('detailOverlay');
+            const closeBtn = document.getElementById('closeBtn');
+            const backBtn = document.getElementById('backBtn');
+            const visitBtn = document.getElementById('visitBtn');
+            
+            const detailIcon = document.getElementById('detailIcon');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailDescription = document.getElementById('detailDescription');
+
+            // 카드 클릭 시 모달 열기
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectId = card.getAttribute('data-project');
+                    const data = projectData[projectId];
+
+                    if (data) {
+                        // 내용 세팅
+                        detailIcon.innerHTML = data.icon;
+                        detailTitle.innerText = data.title;
+                        detailDescription.innerText = data.desc;
+
+                        // 링크 및 방문버튼 활성화/비활성화 처리
+                        if (data.link) {
+                            visitBtn.setAttribute('href', data.link);
+                            visitBtn.classList.remove('disabled');
+                            visitBtn.innerHTML = '방문하기 <i class="fa-solid fa-arrow-up-right-from-square"></i>';
+                        } else {
+                            // 개발 중인 프로젝트의 경우 링크 제거 및 스타일 비활성화
+                            visitBtn.removeAttribute('href');
+                            visitBtn.classList.add('disabled');
+                            visitBtn.innerHTML = '준비 중';
+                        }
+
+                        // 오버레이 표출
+                        overlay.classList.add('active');
+                        document.body.style.overflow = 'hidden'; // 부모 스크롤 방지
+                    }
+                });
+            });
+
+            // 모달 닫기 함수
+            function closeDetail() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = ''; // 부모 스크롤 원복
+            }
+
+            closeBtn.addEventListener('click', closeDetail);
+            backBtn.addEventListener('click', closeDetail);
+            // 배경 빈 곳을 클릭해도 닫히도록 설정
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeDetail();
             });
         });
     </script>
