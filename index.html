@@ -3,761 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>2than</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* 글로벌 디자인 시스템 - 화이트 & 모노톤 회색 조합 */
-        :root {
-            --bg-primary: #ffffff;      /* 순수 흰색 배경 */
-            --bg-secondary: #f9fafb;    /* 카드 등 영역 구분을 위한 옅은 회색 */
-            --bg-card-hover: #f3f4f6;   /* 마우스 올렸을 때 회색 피드백 */
-            --text-primary: #111827;    /* 주요 글씨 (소프트 블랙) */
-            --text-secondary: #6b7280;  /* 보조 설명 글씨 (중간 회색) */
-            --accent: #1f2937;          /* 강조용 다크 차콜 */
-            --border: #e5e7eb;          /* 경계선용 부드러운 회색 */
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-        }
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 80px 20px;
-            overflow-x: hidden;
-        }
+    <link rel="stylesheet" href="style.css">
 
-        .container {
-            width: 100%;
-            max-width: 680px;
-        }
-
-        /* 1. 프로필 & 자기소개 영역 */
-        .profile-section {
-            text-align: center;
-            margin-bottom: 60px;
-            background: var(--bg-secondary);
-            padding: 40px 30px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-        }
-
-        .profile-img-container {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent);
-        }
-
-        .profile-section h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-            color: var(--text-primary);
-        }
-
-        .tag {
-            display: inline-block;
-            font-size: 0.8rem;
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .bio-short {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            cursor: pointer;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .bio-short:hover {
-            color: var(--text-primary);
-        }
-
-        .bio-long {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            text-align: left;
-            background: rgba(0, 0, 0, 0.01);
-            border-radius: 12px;
-        }
-
-        .bio-long.active {
-            max-height: 300px;
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid var(--border);
-        }
-
-        /* 섹션 타이틀 */
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* 2. 프로젝트 리스트 영역 */
-        .projects-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 60px;
-        }
-
-        .project-card {
-            display: flex;
-            align-items: center;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px 24px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, background-color 0.2s;
-        }
-
-        .project-card:hover {
-            border-color: var(--text-primary);
-            background: var(--bg-card-hover);
-        }
-
-        .project-icon {
-            font-size: 1.4rem;
-            color: var(--text-primary);
-            margin-right: 20px;
-            width: 32px;
-            text-align: center;
-        }
-
-        .project-info {
-            flex-grow: 1;
-        }
-
-        .project-info h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--text-primary);
-        }
-
-        .project-info p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .project-action {
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.2s ease;
-        }
-
-        .project-card:hover .project-action {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* 3. 상세 설명 전체 창 (Detail View overlay) */
-        .detail-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.98); /* 전체를 덮는 깔끔한 화이트 배경 */
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .detail-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .detail-window {
-            width: 100%;
-            max-width: 600px;
-            background: var(--bg-primary);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .detail-overlay.active .detail-window {
-            transform: translateY(0);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            font-size: 1.2rem;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .close-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .detail-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .detail-header i {
-            font-size: 2rem;
-            color: var(--text-primary);
-        }
-
-        .detail-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .detail-body {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 40px;
-            white-space: pre-line; /* 줄바꿈 적용 */
-        }
-
-        .detail-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-secondary {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #ffffff;
-            border: 1px solid var(--accent);
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        /* 방문 버튼 비활성화 상태 스타일 */
-        .btn-primary.disabled {
-            background: var(--border);
-            border-color: var(--border);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-            pointer-events: none; /* 클릭 불가 */
-        }
-
-        footer {
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border);
-            padding-top: 30px;
-        }
-    </style>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
+
 <body>
 
-    <div class="container">
-        
-        <!-- 1. 프로필 & 자기소개 -->
-        <section class="profile-section">
-            <div class="profile-img-container">
-    <div class="profile-img"
-         style="display:flex; justify-content:center; align-items:center; font-size:2rem; color:var(--text-secondary); background:var(--bg-card-hover);">
-        <i class="fa-solid fa-code"></i>
-    </div>
+<!-- CUSTOM CURSOR -->
+<div class="cursor">
+    <span></span>
 </div>
-            <span class="tag">Developer</span>
-            <h1>이든</h1>
-            <div class="bio-short" id="bioToggle">
-                <span>developing.. (더 보기)</span>
-                <i class="fa-solid fa-chevron-down" id="bioArrow"></i>
-            </div>
+
+
+<!-- ==================================================
+     INTRO
+================================================== -->
+
+<section class="hero">
+
+    <!-- 3D BACKGROUND -->
+    <div class="hero-3d" id="hero3D"></div>
+
+    <div class="hero-profile">
+
+        <div class="profile-icon">
+            <i class="fa-solid fa-code"></i>
+        </div>
+
+        <p class="hero-small">
+            HELLO, I'M
+        </p>
+
+        <h1 class="hero-name">
+            2than
+        </h1>
+
+        <p class="hero-real-name">
+            CHOI ETHAN
+        </p>
+
+        <p class="hero-description">
+            Code what's missing.
+        </p>
+
+        <div class="socials">
+
+            <a
+                href="https://www.instagram.com/2._.than/"
+                target="_blank"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <i class="fa-brands fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
+
+            <a
+                href="https://www.threads.net/@2._.than"
+                target="_blank"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; overflow: visible; display: inline-block; vertical-align: middle; flex-shrink: 0;">
+                    <path d="M12.186 24h-.007C5.495 23.978 0 18.49 0 11.812 0 5.308 5.341 0 12.015 0h.016c6.674 0 12.015 5.308 12.015 11.812 0 2.505-.79 4.908-2.288 6.89l1.455 1.343c1.724-2.268 2.721-5.05 2.721-8.233C24 5.308 18.659 0 12.031 0 5.392 0 0 5.308 0 11.812c0 6.504 5.392 11.812 12.031 11.812h.155v-2.002h-.155c-1.343 0-2.637-.248-3.843-.736l-.76 1.86c1.38.56 2.87.85 4.455.85h.155zM12.015 19.5c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5 7.5 3.358 7.5 7.5-3.358 7.5-7.5 7.5zm0-13c-3.037 0-5.5 2.463-5.5 5.5s2.463 5.5 5.5 5.5 5.5-2.463 5.5-5.5-2.463-5.5-5.5-5.5z"/>
+                </svg>
+                <span>Threads</span>
+            </a>
+            <a
+                href="https://github.com/2thancho2"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <i class="fa-brands fa-github"></i>
+                <span>GitHub</span>
+            </a>
+
+            <a
+                href="https://www.youtube.com/@2thancho2"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <i class="fa-brands fa-youtube"></i>
+                <span>Youtube</span>
+            </a>
+
+            <a
+                href="https://discord.com/users/1332664203361779766"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <i class="fa-brands fa-discord"></i>
+                <span>Discord</span>
+            </a>
+
+            <a
+                href="https://open.spotify.com/user/313xteb4fjxjrx5lyuoe33cgg34q"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <i class="fa-brands fa-spotify"></i>
+                <span>Spotify</span>
+            </a>
+
+            <a
+                href="https://blog.naver.com/studing_arduino"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                    <path d="M16.273 12.845L7.376 0H0v24h7.726v-12.845L16.624 24H24V0h-7.727v12.845z"/>
+                </svg>
+                <span>NaverBlog</span>
+            </a>
+
+            <a
+                href="https://2than.tistory.com/?page=1"
+                class="social magnetic"
+                data-cursor="OPEN"
+            >
+                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                    <path d="M0 0h24v6H0V0zm9 9h6v15H9V9z"/>
+                </svg>
+                <span>Tstory</span>
+            </a>
+
+
             
-            <div class="bio-long" id="bioLong">
-                안녕하세요, 유용하고 재미있는 웹 서비스를 개발하는 최이든입니다.<br>
-                현재 치동중학교에 재학 중이며, 디스코드 봇부터 FPS 웹 게임, 온라인 저지 시스템 등 다양한 프로젝트를 주도하며 프로그래밍 역량을 키워나가고 있습니다.
+
+        </div>
+
+    </div>
+
+    <div class="scroll-indicator">
+        <span>SCROLL TO EXPLORE</span>
+        <div class="scroll-line"></div>
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     PROJECT INTRO
+================================================== -->
+
+<section class="projects-intro">
+
+    <div class="projects-intro-inner">
+
+        <!-- 3D OBJECTS -->
+        <div
+            class="projects-3d"
+            id="projects3D"
+        ></div>
+
+        <div class="project-word">
+            <span>P</span>
+            <span>R</span>
+            <span>O</span>
+            <span>J</span>
+            <span>E</span>
+            <span>C</span>
+            <span>T</span>
+            <span>S</span>
+        </div>
+
+        <p class="projects-intro-sub">
+            Shipped & Running
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     PROJECT LIST
+================================================== -->
+
+<section class="projects-section">
+
+    <div class="section-top">
+
+        <div>
+            <span class="section-number">01</span>
+            <h2>Projects</h2>
+        </div>
+
+        <span id="projectCount">
+            00 PROJECTS
+        </span>
+
+    </div>
+
+
+    <!-- JS가 자동 생성 -->
+    <div id="projectsList" class="projects-list"></div>
+
+</section>
+
+
+
+<!-- ==================================================
+     ABOUT
+================================================== -->
+
+<section class="about">
+
+    <p class="about-label">
+        ABOUT / 02
+    </p>
+
+    <div class="about-big">
+
+        <span>CODE</span>
+        <span>SHIP</span>
+        <span>REPEAT</span>
+
+    </div>
+
+
+    <div class="about-tags">
+
+        <span>WEB</span>
+        <span>APP</span>
+        <span>GAME</span>
+        <span>BOT</span>
+        <span>EXPERIMENT</span>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================================================
+     CONTACT
+================================================== -->
+
+<section class="contact">
+
+    <p class="contact-small">
+        HAVE AN IDEA?
+    </p>
+
+    <h2>
+        LET'S MAKE <br>
+        SOMETHING
+    </h2>
+
+    <a
+        href="https://www.instagram.com/2._.than/"
+        target="_blank"
+        class="contact-button magnetic"
+        data-cursor="DM"
+    >
+        Instagram DM
+
+        <i class="fa-solid fa-arrow-up-right"></i>
+    </a>
+
+</section>
+
+
+
+<footer>
+
+    <span>2THAN © 2026</span>
+
+    <span>always shipping.</span>
+
+</footer>
+
+
+
+<!-- ==================================================
+     PROJECT DETAIL
+================================================== -->
+
+<div class="project-page" id="projectPage">
+
+    <button
+        class="project-close magnetic"
+        id="projectClose"
+        data-cursor="CLOSE"
+    >
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+
+    <div class="project-page-scroll">
+
+        <header class="detail-hero">
+
+            <p id="detailNumber"></p>
+
+            <h1 id="detailTitle"></h1>
+
+            <p id="detailSubtitle"></p>
+
+
+            <div class="detail-meta">
+
+                <span id="detailYear"></span>
+
+                <a
+                    id="detailVisit"
+                    href="#"
+                    target="_blank"
+                    data-cursor="OPEN"
+                >
+                    VISIT PROJECT
+
+                    <i class="fa-solid fa-arrow-up-right"></i>
+                </a>
+
             </div>
+
+        </header>
+
+
+        <!-- 프로젝트 콘텐츠 자동 생성 -->
+
+        <main
+            id="detailContent"
+            class="detail-content"
+        ></main>
+
+
+        <section class="next-project" id="nextProject">
+
+            <p>NEXT PROJECT</p>
+
+            <h2 id="nextProjectName"></h2>
+
+            <span>
+                CONTINUE
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
         </section>
 
-        <h2 class="section-title"><i class="fa-solid fa-cubes"></i> Projects</h2>
-
-        <!-- 2. 프로젝트 리스트 (클릭 시 상세 모달창 오픈) -->
-        <main class="projects-grid">
-            
-            <!-- Instagram -->
-            <div class="project-card" data-project="instagram">
-                <div class="project-icon"><i class="fa-brands fa-instagram"></i></div>
-                <div class="project-info">
-                    <h3>Instagram</h3>
-                    <p>문의는 Instagram DM</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- Welcome to PY -->
-            <div class="project-card" data-project="welcome-py">
-                <div class="project-icon"><i class="fa-brands fa-python"></i></div>
-                <div class="project-info">
-                    <h3>Welcome to PY</h3>
-                    <p>치동중 코딩부 PY 신청</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- Discord Bot -->
-            <div class="project-card" data-project="discord-bot">
-                <div class="project-icon"><i class="fa-brands fa-discord"></i></div>
-                <div class="project-info">
-                    <h3>Discord Bot : 3than</h3>
-                    <p>다기능 디스코드 봇 삼든이</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- beck.io -->
-            <div class="project-card" data-project="beck-io">
-                <div class="project-icon"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="project-info">
-                    <h3>FPS Game : beck.io</h3>
-                    <p>FPS 총 게임 beck.io</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- 2than Online Judge -->
-            <div class="project-card" data-project="online-judge">
-                <div class="project-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <div class="project-info">
-                    <h3>2than Online Judge</h3>
-                    <p>파이썬 문제 풀이 사이트</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- Kim-Korean translater -->
-            <div class="project-card" data-project="kim-korean">
-                <div class="project-icon"><i class="fa-solid fa-font"></i></div>
-                <div class="project-info">
-                    <h3>Kim-Korean translater</h3>
-                    <p>김민종음 번역기</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- Online Karaoke -->
-            <div class="project-card" data-project="online-karaoke">
-                <div class="project-icon"><i class="fa-solid fa-microphone"></i></div>
-                <div class="project-info">
-                    <h3>Online Karaoke</h3>
-                    <p>온라인 노래방 서비스</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <!-- DuoShao -->
-            <div class="project-card" data-project="duoshao">
-                <div class="project-icon"><i class="fa-solid fa-language"></i></div>
-                <div class="project-info">
-                    <h3>DuoShao (duongoringo)</h3>
-                    <p>시험 만점 대비 사이트</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="BusTyping">
-                <div class="project-icon"><i class="fa-solid fa-bus"></i></div>
-                <div class="project-info">
-                    <h3>BusTyping</h3>
-                    <p>타자 측정 사이트</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="lt">
-                <div class="project-icon"><i class="fa-solid fa-microphone"></i></div>
-                <div class="project-info">
-                    <h3>Listen to</h3>
-                    <p>음원 평가 사이트</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-
-            <div class="project-card" data-project="No-Exit">
-                <div class="project-icon"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="project-info">
-                    <h3>3D MAZE : No Exit</h3>
-                    <p>1인칭 미로 탈풀게임</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="Ball">
-                <div class="project-icon"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="project-info">
-                    <h3>Ball Game : Meme-Ball</h3>
-                    <p>밈 공 대결게임</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="sch">
-                <div class="project-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <div class="project-info">
-                    <h3>Schoolife</h3>
-                    <p>학교생활 올인원 포털</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="captured">
-                <div class="project-icon"><i class="fa-solid fa-comment"></i></div>
-                <div class="project-info">
-                    <h3>CapturedBy</h3>
-                    <p>찍으면 도감이 된다</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="written">
-                <div class="project-icon"><i class="fa-solid fa-comment"></i></div>
-                <div class="project-info">
-                    <h3>WrittenBy</h3>
-                    <p>적으면 글이 된다</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-            <div class="project-card" data-project="mypet">
-                <div class="project-icon"><i class="fa-solid fa-laptop"></i></div>
-                <div class="project-info">
-                    <h3>MyPet</h3>
-                    <p>데스크톱에서 키우는 나만의 봇</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-            
-            <div class="project-card" data-project="OnlineLaunchpad">
-                <div class="project-icon"><i class="fa-solid fa-music"></i></div>
-                <div class="project-info">
-                    <h3>Online Launchpad</h3>
-                    <p>웹 런치패드 사이트(개발중)</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-
-
-            <!-- 2Chat (개발 중) -->
-            <div class="project-card" data-project="2chat">
-                <div class="project-icon"><i class="fa-solid fa-comment"></i></div>
-                <div class="project-info">
-                    <h3>2Chat</h3>
-                    <p>웹 채팅 사이트 (개발중)</p>
-                </div>
-                <div class="project-action">자세히 보기 <i class="fa-solid fa-chevron-right"></i></div>
-            </div>
-
-        </main>
-
-        <footer>
-            <p>© 2026 2than. All rights reserved.</p>
-        </footer>
     </div>
 
-    <!-- 3. 상세 정보 오버레이 화면 -->
-    <div class="detail-overlay" id="detailOverlay">
-        <div class="detail-window">
-            <button class="close-btn" id="closeBtn"><i class="fa-solid fa-xmark"></i></button>
-            <div class="detail-header">
-                <div id="detailIcon"></div>
-                <h2 id="detailTitle">프로젝트 제목</h2>
-            </div>
-            <div class="detail-body" id="detailDescription">
-                여기에 프로젝트 상세 설명이 들어갑니다.
-            </div>
-            <div class="detail-footer">
-                <button class="btn btn-secondary" id="backBtn">돌아가기</button>
-                <a href="#" target="_blank" class="btn btn-primary" id="visitBtn">방문하기 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <script>
-        // 💡 각 프로젝트별 데이터 정의 (여기에 자세한 설명을 마음껏 적으세요!)
-        const projectData = {
-            "instagram": {
-                title: "Instagram",
-                icon: '<i class="fa-brands fa-instagram"></i>',
-                desc: "저의 인스타그램 계정입니다.\n프로젝트 협업 제안, 버그 제보, 기타 모든 문의 사항은 인스타그램 DM을 통해 보내주시면 가장 빠르게 확인하고 답변해 드릴 수 있습니다.",
-                link: "https://www.instagram.com/2._.than/"
-            },
-            "welcome-py": {
-                title: "Welcome to PY",
-                icon: '<i class="fa-brands fa-python"></i>',
-                desc: "치동중학교 코딩 동아리 'PY'의 부원 모집 및 신청을 위한 웹사이트입니다.\n\n동아리 소개, 주요 활동 커리큘럼을 확인할 수 있으며 파이썬에 관심이 있는 치동중 학생들이 편리하게 지원할 수 있도록 프론트엔드를 구성했습니다.",
-                link: "https://welcometopy.netlify.app"
-            },
-            "discord-bot": {
-                title: "Discord Bot : 3than",
-                icon: '<i class="fa-brands fa-discord"></i>',
-                desc: "디스코드 서버의 관리와 재미를 책임지는 다기능 봇 '삼든이' 프로젝트입니다.\n\n다양한 서버 관리 명령어부터 유저들이 즐길 수 있는 미니게임, 편리한 유틸리티 기능까지 유연하게 작동하도록 설계된 백엔드 기반 봇입니다. 위 버튼을 통해 본인의 서버에 초대할 수 있습니다.\n\n 현재 삼든이는 24/7 작동되는 것이 아닙니다. 서버를 빨리 복구할수 있도록 노력하겠습니다.",
-                link: "https://discord.com/oauth2/authorize?client_id=1462335234832994508&permissions=8&integration_type=0&scope=bot"
-            },
-            "beck-io": {
-                title: "FPS Game : beck.io",
-                icon: '<i class="fa-solid fa-gamepad"></i>',
-                desc: "웹 브라우저에서 별도의 설치 없이 즉시 즐길 수 있는 FPS(1인칭 슈팅) 웹 게임입니다.\n\n매끄러운 그래픽 구현과 판정 로직에 집중하여 개발한 몰입감 넘치는 프로젝트입니다.\n\n 현재는 ai1, ai2 vs player, ai3 형식이며, 추후에 플레이어끼리 지정된 id를 통해 게임이 가능한 버전으로 배포될 예정입니다.",
-                link: "https://beckio.kro.kr"
-            },
-            "online-judge": {
-                title: "2than Online Judge",
-                icon: '<i class="fa-solid fa-graduation-cap"></i>',
-                desc: "파이썬 언어를 학습하는 학생들을 위한 온라인 알고리즘 문제 풀이(Online Judge) 채점 시스템입니다.\n\n사용자가 제출한 코드를 서버에서 안전하고 정확하게 런타임 검증을 거쳐 정답 여부를 판정해 줍니다. 단계별 문제를 통해 코딩 실력을 키울 수 있습니다.\n\n현재 코드 AI 판별 기능을 개발 중입니다.",
-                link: "https://2than.kro.kr"
-            },
-            "kim-korean": {
-                title: "Kim-Korean translater",
-                icon: '<i class="fa-solid fa-font"></i>',
-                desc: "친구들과 유쾌하게 사용할 수 있는 독창적인 언어 번역기, '김민종음 번역기' 서비스입니다.\n\n입력한 한글 텍스트를 특정 규칙과 알고리즘에 따라 2026치동중 전교회장 김민종 씨가 만든 김민종음으로 실시간 치환 및 번역해 주는 위트 있는 웹 애플리케이션입니다.\n\n 현재 단일 자음 번역문제와 받침 해석 오류를 수정 중입니다.",
-                link: "https://kimkorean.netlify.app"
-            },
-            "online-karaoke": {
-                title: "Online Karaoke",
-                desc: "코인노래방에 가지 않고도 웹에서 자유롭게 반주에 맞춰 노래를 부를 수 있는 온라인 노래방 서비스입니다.\n\n영상을 직접 제작하여 업로드하였고, 누구나 쉽게 접근하여 즐길 수 있도록 제작했습니다.\n\n곡 추가 문의는 인스타그램 DM으로 보내주세요.\n\n현재 곡 점수는 랜덤으로 표시되고있으며, AI 점수 측정 기능을 제작중입니다.",
-                icon: '<i class="fa-solid fa-microphone"></i>',
-                link: "https://onlinekaraoke.kro.kr"
-            },
-            "duoshao": {
-                title: "DuoShao (duongoringo)",
-                icon: '<i class="fa-solid fa-language"></i>',
-                desc: "학교 시험 및 각종 테스트에서 만점을 목표로 하는 학생들을 위한 맞춤형 학습 대비 사이트입니다.\n\n핵심 암기 과목의 키워드 체크, 오답 노트 기능, 효과적인 암기 메커니즘을 웹으로 구현하여 시험 준비 효율성을 극대화해 주는 교육 보조 도구입니다.\n\n교과서 및 과목 추가 문의는 인스타그램 DM으로 보내주세요.",
-                link: "https://duongoringo.kro.kr/"
-            },
-            "BusTyping": {
-                title: "BusTyping",
-                icon: '<i class="fa-solid fa-bus"></i>',
-                desc: "한 인스타그램 유저가 개발한 'MetroTyping' 를 모티브로 하여 개발한 타자 측정 사이트입니다.\n\n위에 뜨는 버스정류장 이름을 입력하면서 여행하는 느낌과 타자 측정을 동시에 할수 있게 만든 사이트입니다.\n원작자의 동의를 얻고, 수정한 뒤 배포되었습니다.\n\n노선 추가 문의는 인스타그램 DM으로 보내주세요.\n\n현재 타수측정 프로그램에 에러가 발생하여, 타수가 정확하게 측정되지 않을수 잇습니다.",
-                link: "http://bustyping.kro.kr/"
-            },
-            "lt": {
-                title: "Listen to",
-                desc: "listen to는 장르를 가리지 않고, 선발된 리스너들이 직접 듣고 토의해서 등급을 결정하는 음악 평가 사이트입니다.\n알고리즘이나 애매한 기준이 아니라, 실제로 곡을 끝까지 들어본 사람들의 논의를 거쳐 올라옵니다.\n자동화된 필터가 놓치는 미묘한 맥락과 표현까지 사람의 귀와 판단으로 짚어내는 게 저희 방식입니다.\n애매한 기준에 지친 분들, 믿을 수 있는 평가가 필요한 분들 — listen to에서 확인해보세요.\n\n📩 문의 및 리스너 지원: 인스타그램 listento._.official",
-                icon: '<i class="fa-solid fa-microphone"></i>',
-                link: "https://listento.kro.kr"
-            },
-            "No-Exit": {
-                title: "3D MAZE : No Exit",
-                icon: '<i class="fa-solid fa-gamepad"></i>',
-                desc: "웹 브라우저에서 별도의 설치 없이 즉시 즐길 수 있는 3D 미로 탈출 웹 게임입니다.\n\n매끄러운 그래픽 구현과 판정 로직에 집중하여 개발한 몰입감 넘치는 프로젝트입니다.\n\n 현재는 AI 술래들을 피하여 미로를 탈출하는 형식이며, 추후에 플레이어끼리 지정된 id를 통해 게임이 가능한 버전으로 배포될 예정입니다.",
-                link: "http://no-exit.kro.kr"
-            },
-            "Ball": {
-                title: "Ball Game : Meme-Ball",
-                icon: '<i class="fa-solid fa-gamepad"></i>',
-                desc: "한 인스타그램 유저의 핀볼영상인 '볼파이트코리아' 를 모티브로 하여 개발한 웹 핀볼 게임입니다.\n\n매끄러운 그래픽 구현과 판정 로직에 집중하여 개발한 한국 밈 게임 프로젝트입니다.\n\n 현재는 AI vs AI 또는 AI vs 플레이어 형식이며, 추후에 플레이어끼리 지정된 id를 통해 게임이 가능한 버전으로 배포될 예정입니다.\n\nn원작자의 동의를 얻고, 수정한 뒤 배포되었습니다.",
-                link: "http://memeball.kro.kr"
-            },
-            "sch": {
-                title: "Schoolife",
-                icon: '<i class="fa-solid fa-graduation-cap"></i>',
-                desc: "편리한 학교생활을 위한 도우미 사이트입니다.\n\n학생들의 편리한 공부생활을 위한 공부, 입시, 과제준비, D-day카운터 등의 기능과 선생님들의 원할한 수업진행을 위한 다양한 수업도구들을 모두 갖추고 있습니다 .\n이 사이트에서 저장한 정보들은 서버로 절대 전송되지 않으며, 오직 사용한 브라우저에서만 확인이 가능합니다.\n\n기능 추가 문의는 인스타그램 dm부탁드립니다.",
-                link: "https://schoolife.kro.kr"
-            },
-            "captured": {
-                title: "CapturedBy",
-                icon: '<i class="fa-solid fa-comment"></i>',
-                desc: "구글 제미나이 무료 api를 이용한 도감사이트입니다.\nlocalstorage를 이용하여 나의 도감목록이나 api키가 외부 서버에 공유되지않습니다.\napi키는 직접 발급하여 설정값에 추가해야합니다.\n기능 추가 문의는 인스타그램 dm부탁드립니다.",
-                link: "https://capturedby.kro.kr" // 개발 중이므로 링크 없음
-            },
-            "written": {
-                title: "WrittenBy",
-                icon: '<i class="fa-solid fa-comment"></i>',
-                desc: "인스타그램 쓰레드 같은 글 공유 사이트입니다.\n구글 firebase로 현재.\n시와 명언, 글을 공유할수있습니다.\n기능 추가 문의는 인스타그램 dm부탁드립니다.",
-                link: "http://writtenby.kro.kr" // 개발 중이므로 링크 없음
-            },
-            "mypet": {
-                title: "MyPet",
-                icon: '<i class="fa-solid fa-laptop"></i>',
-                desc: "바쁜 화면 위에서 나만의 귀여운 반려동물과 함께할 수 있는 데스크톱 오버레이 펫 프로그램입니다\n먹이 주기, 빗질 등 다양한 상호작용과 레벨업 시스템으로 키우는 재미를 더했습니다.\n가볍고 직관적인 인터페이스로 macOS와 Windows 환경을 모두 지원합니다.\n기능 추가 문의는 인스타그램 dm부탁드립니다.",
-                link: "https://mypet-install.kro.kr/" // 개발 중이므로 링크 없음
-            },
-            "2chat": {
-                title: "2Chat",
-                icon: '<i class="fa-solid fa-comment"></i>',
-                desc: "현재 열심히 기획 및 백엔드 설계를 진행 중인 웹 기반 채팅 서비스입니다.\n\n안정적인 실시간 소통 인프라를 구축 중이며, 개발이 완료되는 대로 오픈될 예정입니다. 조금만 기다려 주세요!",
-                link: null // 개발 중이므로 링크 없음
-            },
-            "OnlineLaunchpad": {
-                title: "Online Launchpad",
-                icon: '<i class="fa-solid fa-music"></i>',
-                desc: "현재 열심히 기획 및 설계를 진행 중인 웹 기반 음악 런치패드 서비스입니다.\n\n안정적인 소래 재생과 키보드 인식률을 구축 중이며, 개발이 완료되는 대로 오픈될 예정입니다. 조금만 기다려 주세요!",
-                link: null // 개발 중이므로 링크 없음
-            }
-        };
 
-        // 프로필 이미지 로드 실패 시 대안 아이콘 표시
-        function handleImageError() {
-            const img = document.getElementById('userProfile');
-            const defIcon = document.getElementById('defaultIcon');
-            if (img) img.style.display = 'none';
-            if (defIcon) defIcon.style.display = 'flex';
-        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const img = document.getElementById('userProfile');
+<script src="projects.js"></script>
+<script src="app.js"></script>
 
-            // 1. 자기소개 아코디언 제어
-            const bioToggle = document.getElementById('bioToggle');
-            const bioLong = document.getElementById('bioLong');
-            const bioArrow = document.getElementById('bioArrow');
+<script type="module" src="three.js"></script>
 
-            bioToggle.addEventListener('click', () => {
-                const isActive = bioLong.classList.toggle('active');
-                bioArrow.style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
-                bioToggle.querySelector('span').innerText = isActive ? 'developing.. (접기)' : 'developing.. (더 보기)';
-            });
-
-            // 2. 카드 순차적 진입 애니메이션
-            const cards = document.querySelectorAll('.project-card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 50);
-            });
-
-            // 3. 상세 설명 오버레이 제어 로직
-            const overlay = document.getElementById('detailOverlay');
-            const closeBtn = document.getElementById('closeBtn');
-            const backBtn = document.getElementById('backBtn');
-            const visitBtn = document.getElementById('visitBtn');
-            
-            const detailIcon = document.getElementById('detailIcon');
-            const detailTitle = document.getElementById('detailTitle');
-            const detailDescription = document.getElementById('detailDescription');
-
-            // 카드 클릭 시 모달 열기
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const projectId = card.getAttribute('data-project');
-                    const data = projectData[projectId];
-
-                    if (data) {
-                        // 내용 세팅
-                        detailIcon.innerHTML = data.icon;
-                        detailTitle.innerText = data.title;
-                        detailDescription.innerText = data.desc;
-
-                        // 링크 및 방문버튼 활성화/비활성화 처리
-                        if (data.link) {
-                            visitBtn.setAttribute('href', data.link);
-                            visitBtn.classList.remove('disabled');
-                            visitBtn.innerHTML = '방문하기 <i class="fa-solid fa-arrow-up-right-from-square"></i>';
-                        } else {
-                            // 개발 중인 프로젝트의 경우 링크 제거 및 스타일 비활성화
-                            visitBtn.removeAttribute('href');
-                            visitBtn.classList.add('disabled');
-                            visitBtn.innerHTML = '준비 중';
-                        }
-
-                        // 오버레이 표출
-                        overlay.classList.add('active');
-                        document.body.style.overflow = 'hidden'; // 부모 스크롤 방지
-                    }
-                });
-            });
-
-            // 모달 닫기 함수
-            function closeDetail() {
-                overlay.classList.remove('active');
-                document.body.style.overflow = ''; // 부모 스크롤 원복
-            }
-
-            closeBtn.addEventListener('click', closeDetail);
-            backBtn.addEventListener('click', closeDetail);
-            // 배경 빈 곳을 클릭해도 닫히도록 설정
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeDetail();
-            });
-        });
-    </script>
 </body>
 </html>
